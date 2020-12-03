@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd day1
+swift Contents.swift

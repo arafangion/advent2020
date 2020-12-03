@@ -1,0 +1,5 @@
+#!/bin/sh
+
+./day1/runit
+./day2/runit
+./day3/runit
