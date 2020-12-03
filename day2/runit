@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Python 3"
+python3 day2.py

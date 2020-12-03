@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd day1
+echo "Swift"
 swift Contents.swift

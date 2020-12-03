@@ -1,5 +1,5 @@
 #!/bin/sh
 
-./day1/runit
-./day2/runit
-./day3/runit
+pushd day1; ./runit; popd
+pushd day2; ./runit; popd
+pushd day3; ./runit; popd

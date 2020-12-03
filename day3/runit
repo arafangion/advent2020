@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Haskell"
+cabal run day3
