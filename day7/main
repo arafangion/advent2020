@@ -1,0 +1,95 @@
+use strict;
+use warnings;
+use Data::Dumper;
+
+# Largely took code samples from https://www.perl.com/article/21/2013/4/21/Read-an-entire-file-into-a-string/
+# Also
+# https://perldoc.perl.org/perlreftut
+
+open my $fh, '<', 'input.data' or die "Can't open file $!";
+#open my $fh, '<', 'sample2.data' or die "Can't open file $!";
+#open my $fh, '<', 'sample.data' or die "Can't open file $!";
+my @lines = <$fh>;
+
+my %rules = ();
+
+foreach ( @lines ) {
+	my $line = $_;
+	my $bagdesc = qr/(\d* ?.*) bags?/;
+	my ($left, @right) = ($line =~ m/(.*) bags? contain ($bagdesc,?)+/);
+	shift @right;
+	my @rights = split / bags?, /, $right[0];
+	foreach (@rights) {
+		my ($count, $desc) = ($_ =~ m/(\d*) ?(.*)/);
+		if ($count eq "") {
+			$count = 0;
+		}
+		push @{$rules{$left}}, [ $count, $desc ];
+	}
+}
+
+#foreach ( keys %rules ) {
+#	print "$_ bags contain ";
+#	foreach ( @{$rules{$_}} ) {
+#		my @items = @{$_};
+#		my $count = shift @items;
+#		my $colour = shift @items;
+#		if ($count == 0) {
+#			print "$colour bags, ";
+#		} else {
+#			print "$count $colour bags, ";
+#		}
+#	}
+#	print "\n";
+#}
+
+print "\n";
+
+
+sub locateBag {
+	my @args = @_;
+	my $bag = shift @args;
+	my %matches;
+	foreach ( keys (%rules) ) {
+		my $key = $_;
+		foreach ( @{$rules{$key}}) {
+			my ($count, $colour) = @$_;
+
+			if ($colour eq $bag) {
+				$matches{$key} = 1;
+				my %results = %{locateBag($key)};
+				foreach my $item (keys %results) {
+					$matches{$item} = 1;
+				}
+			}
+		}
+	}
+	return \%matches;
+}
+
+sub bagContentCount {
+	my ($bag) = @_;
+	my $count = 0;
+	if (exists $rules{$bag}) {
+		my @contains = @{$rules{$bag}};
+		foreach (@contains) {
+			my ($ncount, $nested) = @{$_};
+			if (!($nested eq "no other")) {
+				my $recursive = bagContentCount($nested);
+				$count += $ncount + $ncount * $recursive; 
+			}
+		}
+	}
+
+	return $count;
+}
+
+
+my %results = %{locateBag 'shiny gold'};
+my @part1 = keys %results;
+print "Day 7, part 1: ";
+print (scalar @part1);
+print "\n";
+print "Day 7, part 2: ";
+print (bagContentCount 'shiny gold');
+print "\n";

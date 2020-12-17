@@ -1,0 +1,45 @@
+# Refactored by mst in #freenode.
+use strict;
+use warnings;
+use Data::Dumper;
+
+my @lines = do {
+    open my $fh, '<', 'input.data' or die "Can't open file $!";
+    <$fh>
+};
+
+my %rules;
+
+foreach my $line ( @lines ) {
+	my $bagdesc = qr/(\d* ?.*) bags?/;
+	my ($left, undef, $right) = ($line =~ m/(.*) bags? contain ($bagdesc,?)+/);
+	my @rights = split / bags?, /, $right;
+	foreach (@rights) {
+		my ($count, $desc) = ($_ =~ m/(\d*) ?(.*)/);
+		push @{$rules{$left}}, [ $count||0, $desc ];
+	}
+}
+
+print "\n";
+
+sub locateBag {
+	my ($bag) = @_;
+	my %matches;
+	foreach my $key (sort keys %rules) {
+		foreach my $rule (@{$rules{$key}}) {
+			my ($count, $colour) = @$rule;
+
+			if ($colour eq $bag) {
+				$matches{$key} = 1;
+				%matches = (%matches, %{locateBag $key});
+			}
+		}
+	}
+	return \%matches;
+}
+
+my @part1 = keys %{locateBag 'shiny gold'};
+foreach my $foo (@part1) {
+	print "Match found: $foo\n";
+}
+print (scalar @part1);

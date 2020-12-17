@@ -6,3 +6,4 @@ pushd day3; ./runit; popd
 pushd day4; ./runit; popd
 pushd day5; ./runit; popd
 pushd day6; ./runit; popd
+pushd day7; ./runit; popd
