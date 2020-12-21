@@ -1,0 +1,3 @@
+echo "This requires DOSBOX: http://dosbox.com"
+echo "And requires QuickBasic: https://www.qbasic.net/en/qbasic-downloads/compiler/qbasic-compiler.htm"
+echo "Run PART1.BAS and PART2.BAS manually using qbx in doxbos."

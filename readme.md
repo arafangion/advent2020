@@ -14,4 +14,6 @@ Day 7: Perl (With some tips with the language, "mst" offered to refactor part 1)
 Day 8: Lua
 Day 9: sh (Using the dash shell)
 Day 10: Ruby (By mistake, I forgot that I had already used ruby on day 5)
+Day 11: Go
+Day 12: QuickBasic, via dosbox.
 
